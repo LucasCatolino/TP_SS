@@ -29,7 +29,7 @@ public class space {
         double xBase = getBase(x, M);
         double yBase = getBase(y, M);
 
-        return (int) (xBase+( L/M * yBase));
+        return (int) (xBase+( L/M * (yBase-1)));
     }
 
     private double getBase(double num, double M){

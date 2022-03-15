@@ -8,26 +8,44 @@ import java.util.Date;
 
 public class Writer {
 
-    public Writer(int L, int N) {
+    public Writer(int L, int N, String type) {
         try {
-            File file = new File("./resources/static" + L + ".txt");
-            FileWriter myWriter = new FileWriter("./resources/static" + L + ".txt");
-            myWriter.write("" + L + "\n");
-            myWriter.write("" + N + "\n");
+            File file = new File("./resources/" + type + L + ".txt");
+            FileWriter myWriter = new FileWriter("./resources/" + type + L + ".txt");
+            //myWriter.write("" + L + "\n");
+            //myWriter.write("" + N + "\n");
             try {
-            	this.randomizeParticles(L,N, myWriter);				
+            	if (type.compareTo("dinamic") == 0) {
+					this.randomizePositions(L, N, myWriter);
+				} else {
+					this.randomizeParticles(L, N, myWriter);
+				}
+            	//(type.compareTo("dinamic") == 0) ? this.randomizePositions(L, N, myWriter): this.randomizeParticles(L, N, myWriter);
+            	//this.randomizeParticles(L,N, myWriter);				
 			} catch (Exception e) {
 				System.err.println("IOException");
 			}
             myWriter.close();
-            System.out.println("Successfully wrote to the file ./resources/static" + L + ".txt");
+            System.out.println("Successfully wrote to the file ./resources/" + type + L + ".txt");
         } catch (IOException e) {
             System.out.println("IOException ocurred");
             e.printStackTrace();
         }
     }
 
-	private void randomizeParticles(int l, int n, FileWriter myWriter) throws IOException {
+	private void randomizeParticles(Integer l, int n, FileWriter myWriter) throws IOException {
+		myWriter.write("" + l + "\n");
+		myWriter.write("" + n + "\n");
+		for (int i = 0; i < n; i++) {
+			double rad= Math.random();
+			int prop= 1;
+			myWriter.write("" + rad + "\t" + "" + prop + "\n");
+		}
+		
+	}
+
+	private void randomizePositions(int l, int n, FileWriter myWriter) throws IOException {
+		myWriter.write("0\n");
 		for (int i = 0; i < n; i++) {			
 			double x= Math.random()*l;
 			double y= Math.random()*l;

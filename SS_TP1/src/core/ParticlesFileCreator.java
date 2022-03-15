@@ -23,7 +23,9 @@ public class ParticlesFileCreator {
     	int N= Integer.valueOf(auxN);
 
     	System.out.println("L: " + (L+2) + " N: " + N);
-        Writer writer = new Writer(L, N);
+        Writer writerDinamic = new Writer(L, N, "dinamic");
+        Writer writerStatic = new Writer(L, N, "static");
+
     	//CIM file= new CIM();
     }
 

@@ -2,4 +2,5 @@
 .idea
 .project
 .classpath
-./resources/*
+./resources/*.txt
+*.txt

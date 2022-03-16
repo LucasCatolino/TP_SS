@@ -57,10 +57,10 @@ public class space {
         return mySpace[cell];
     }
 
-    public List<Particle> previousCell(int cell){
+    /*public List<Particle> previousCell(int cell){
         if(cell-1 )
         return mySpace[cell];
-    }
+    }*/
 
     //intenta imprimir una especie de gráfico de space
     public void print(){

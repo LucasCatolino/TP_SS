@@ -1,14 +1,13 @@
 package core.cim;
 
 import core.Particle;
-import core.Point;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class space {
+
 
     private final List<Particle>[] mySpace;
     private final int L;
@@ -51,16 +50,83 @@ public class space {
         return (aux/M);
     }
 
-    //devulve una lista con todas la particulas
-    //que pertenecen a la celda cell
+
+    //TODO: testear
+    //devulve una lista con todas la particulas de la celda
     public List<Particle> getParticles(int cell){
+        if(cell < 0 || cell > numProjCell*numProjCell)
+            return null;
         return mySpace[cell];
     }
 
-    /*public List<Particle> previousCell(int cell){
-        if(cell-1 )
-        return mySpace[cell];
-    }*/
+    //devuelve las partículas de las celda izquierda
+    public List<Particle> LeftCellParticles(int cell){
+        return getParticles(leftCellNum(cell));
+    }
+
+    //devuelve las partículas de las celda derecha
+    public List<Particle> rightCellParticles(int cell){
+        return getParticles(rightCellNum(cell));
+    }
+
+    //devuelve las partículas de las celda de arriba
+    public List<Particle> topCellParticles(int cell){
+        return getParticles(topCellNum(cell));
+    }
+
+    //devuelve las partículas de las celda de abajo
+    public List<Particle> bottomCellParticles(int cell){
+        return getParticles(bottomCellNum(cell));
+    }
+    //devuelve las partículas de las celda diagonal arriba der
+    public List<Particle> topRightCellParticles(int cell){
+        return getParticles(rightCellNum(topCellNum(cell)));
+    }
+    //devuelve las partículas de las celda diag arriba izq
+    public List<Particle> topLeftParticles(int cell){
+        return getParticles(leftCellNum(topCellNum(cell)));
+    }
+    //devuelve las partículas de las celda diag abajo der
+    public List<Particle> bottomRightCellParticles(int cell){
+        return getParticles(rightCellNum(bottomCellNum(cell)));
+    }
+    //devuelve las partículas de las celda diag abajo izq
+    public List<Particle> bottomLeftCellParticles(int cell){
+        return getParticles(leftCellNum(bottomCellNum(cell)));
+    }
+
+
+
+
+
+
+
+    //TODO: testear
+    ///funciones de calculo de celdas vecinas
+    private int leftCellNum(int cell){
+        if(cell < 0 || cell%numProjCell == 0)//estoy en un borde de la izquierda
+            return -1;
+        return --cell;
+    }
+    private int rightCellNum(int cell){
+        if(cell < 0 || (cell-numProjCell)%numProjCell == 0)//estoy en un borde de la derecha
+            return -1;
+        return ++cell;
+    }
+
+    private int topCellNum(int cell){
+        if(cell < 0 || (cell+=numProjCell) > numProjCell*numProjCell)//estoy en el borde superior
+            return -1;
+        return cell;
+    }
+    private int bottomCellNum(int cell){
+        if(cell < 0 || (cell-=numProjCell) < 0)//estoy en el borde inferiro
+            return -1;
+        return cell;
+    }
+
+
+
 
     //intenta imprimir una especie de gráfico de space
     public void print(){

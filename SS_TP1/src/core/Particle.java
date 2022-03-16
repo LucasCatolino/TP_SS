@@ -19,8 +19,9 @@ public class Particle {
     }
 
     public double distance(Particle p){
-        //TODO: que pasa si estan superpuestas, devueleve negativos
-        return center.distance(p.getCenter()) - radius - p.radius;
+    	double dist= center.distance(p.getCenter()) - radius - p.radius;
+    	//if particles are overlapped, distance betwen borders is zero
+        return (dist > 0) ? dist : 0;
     }
 
     public void move(double x, double y){

@@ -24,5 +24,47 @@ public class Tests {
 		assertEquals(0.5, particle.getCenter().getX(), 0.01);
 		assertEquals(0.5, particle.getCenter().getY(), 0.01);
 	}
+	
+	@Test
+	public void test02DistanciaEntreParticulas() {
+		Point point1= new Point(1, 1);
+		double radius1= 0.5;
+		Particle particle1= new Particle(point1, radius1);
+		
+		Point point2= new Point(3, 1);
+		double radius2= 0.5;
+		Particle particle2= new Particle(point2, radius2);
+
+		assertEquals(1.0, particle1.distance(particle2), 0.01);
+		assertEquals(1.0, particle2.distance(particle1), 0.01);
+	}
+	
+	@Test
+	public void test03DistanciaEntreParticulasSuperpuestasEsNula() {
+		Point point1= new Point(1, 1);
+		double radius1= 0.5;
+		Particle particle1= new Particle(point1, radius1);
+		
+		Point point2= new Point(1, 1);
+		double radius2= 0.7;
+		Particle particle2= new Particle(point2, radius2);
+
+		assertEquals(0.0, particle1.distance(particle2), 0.01);
+		assertEquals(0.0, particle2.distance(particle1), 0.01);
+	}
+	
+	@Test
+	public void test04DistanciaEntreParticulasSuperpuestasEsNula() {
+		Point point1= new Point(1, 1);
+		double radius1= 0.5;
+		Particle particle1= new Particle(point1, radius1);
+		
+		Point point2= new Point(2, 1);
+		double radius2= 0.7;
+		Particle particle2= new Particle(point2, radius2);
+
+		assertEquals(0.0, particle1.distance(particle2), 0.01);
+		assertEquals(0.0, particle2.distance(particle1), 0.01);
+	}
 
 }

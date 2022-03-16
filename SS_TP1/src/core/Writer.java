@@ -20,8 +20,6 @@ public class Writer {
 				} else {
 					this.randomizeParticles(L, N, myWriter);
 				}
-            	//(type.compareTo("dinamic") == 0) ? this.randomizePositions(L, N, myWriter): this.randomizeParticles(L, N, myWriter);
-            	//this.randomizeParticles(L,N, myWriter);				
 			} catch (Exception e) {
 				System.err.println("IOException");
 			}

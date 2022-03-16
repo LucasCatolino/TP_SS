@@ -33,7 +33,7 @@ public class space {
     }
 
     //se utilizan en add
-    //dada una partícula devuelve la celda a la que pertenece
+    //dada una particula devuelve la celda a la que pertenece
     private int getCell(Particle p){
         double x = p.getCenter().getX();
         double y = p.getCenter().getY();
@@ -52,45 +52,45 @@ public class space {
 
 
     //TODO: testear
-    //devulve una lista con todas la particulas de la celda
+    //devuelve una lista con todas la particulas de la celda
     public List<Particle> getParticles(int cell){
         if(cell < 0 || cell > numProjCell*numProjCell)
             return null;
         return mySpace[cell];
     }
 
-    //devuelve las partículas de las celda izquierda
+    //devuelve las particulas de las celda izquierda
     public List<Particle> LeftCellParticles(int cell){
         return getParticles(leftCellNum(cell));
     }
 
-    //devuelve las partículas de las celda derecha
+    //devuelve las particulas de las celda derecha
     public List<Particle> rightCellParticles(int cell){
         return getParticles(rightCellNum(cell));
     }
 
-    //devuelve las partículas de las celda de arriba
+    //devuelve las particulas de las celda de arriba
     public List<Particle> topCellParticles(int cell){
         return getParticles(topCellNum(cell));
     }
 
-    //devuelve las partículas de las celda de abajo
+    //devuelve las particulas de las celda de abajo
     public List<Particle> bottomCellParticles(int cell){
         return getParticles(bottomCellNum(cell));
     }
-    //devuelve las partículas de las celda diagonal arriba der
+    //devuelve las particulas de las celda diagonal arriba der
     public List<Particle> topRightCellParticles(int cell){
         return getParticles(rightCellNum(topCellNum(cell)));
     }
-    //devuelve las partículas de las celda diag arriba izq
+    //devuelve las particulas de las celda diag arriba izq
     public List<Particle> topLeftParticles(int cell){
         return getParticles(leftCellNum(topCellNum(cell)));
     }
-    //devuelve las partículas de las celda diag abajo der
+    //devuelve las particulas de las celda diag abajo der
     public List<Particle> bottomRightCellParticles(int cell){
         return getParticles(rightCellNum(bottomCellNum(cell)));
     }
-    //devuelve las partículas de las celda diag abajo izq
+    //devuelve las particulas de las celda diag abajo izq
     public List<Particle> bottomLeftCellParticles(int cell){
         return getParticles(leftCellNum(bottomCellNum(cell)));
     }

@@ -27,4 +27,8 @@ public class Particle {
         center.move(x, y);
     }
 
+    @Override
+    public String toString() {
+        return center.toString();
+    }
 }

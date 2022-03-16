@@ -22,7 +22,7 @@ public class ParticlesFileCreator {
     	int L= Integer.valueOf(auxL);
     	int N= Integer.valueOf(auxN);
 
-    	System.out.println("L: " + (L+2) + " N: " + N);
+    	System.out.println("L: " + (L+2) + " N: " + N);  //TODO: porque l+2?
         Writer writerDinamic = new Writer(L, N, "dinamic");
         Writer writerStatic = new Writer(L, N, "static");
 

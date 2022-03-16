@@ -1,43 +1,112 @@
 package core.cim;
 
 import core.Particle;
+import core.Point;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class space {
 
-    private List<List<Particle>> mySpace;
+    private final List<Particle>[] mySpace;
+    private final int L;
+    private final int M;
+    private final int numProjCell;
 
-    public space(List<Particle> particles, Integer L, Integer M) {
-        //TODO: chequear que los parametros sean validos
-        //int numOfCell = (L/M)^2;
-        mySpace = new ArrayList<>();
-        for (Particle p : particles) {
-            int index = getCell(p,M,L);
-            if(mySpace.get(index) == null){
-                //TODO: crear unn arrayList y gregar p
-            }else
-                mySpace.get(index).add(p);  //no se si puedo hacer esto
-        }
+    public space(int l, int m) {
+        numProjCell = l/m;
+        mySpace = (List<Particle>[]) new List[(numProjCell*numProjCell)];
+        //mySpace = new ArrayList<>(l*l);
+        L = l;
+        M = m;
+
     }
 
-    private int getCell(Particle p,double M, double L){
+    //agrega una particula al espacio
+    public void add(Particle p){
+        int index = getCell(p);
+        if(mySpace[index] == null){
+            mySpace[index]= new ArrayList<>();
+        }
+        mySpace[index].add(p);
+    }
+
+    //se utilizan en add
+    //dada una partícula devuelve la celda a la que pertenece
+    private int getCell(Particle p){
         double x = p.getCenter().getX();
         double y = p.getCenter().getY();
 
-        double xBase = getBase(x, M);
-        double yBase = getBase(y, M);
+        double xProjections = getProjections(x);
+        double yProjections = getProjections(y);
 
-        return (int) (xBase+( L/M * (yBase-1)));
+        return (int) (xProjections +( numProjCell * (yProjections)));
     }
 
-    private double getBase(double num, double M){
+    //se utiliza en add
+    private double getProjections(double num){
         double aux = num - num %M;
-        return (aux/M) + 1;
+        return (aux/M);
     }
 
-    
+    //devulve una lista con todas la particulas
+    //que pertenecen a la celda cell
+    public List<Particle> getParticles(int cell){
+        return mySpace[cell];
+    }
+
+    public List<Particle> previousCell(int cell){
+        if(cell-1 )
+        return mySpace[cell];
+    }
+
+    //intenta imprimir una especie de gráfico de space
+    public void print(){
+        for (int y = numProjCell-1; y >= 0; y--) {
+            System.out.print(y+" |");
+            for (int x = 0; x<numProjCell; x++) {
+                System.out.print(mySpace[(x+(numProjCell*y))]);
+                System.out.print(" | ");
+            }
+            System.out.println();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(mySpace);
+    }
 
 
+    /*
+    public static void main(String[] args){
+        int l=100, m=5, n=1000, maxr =2;
+        List<Particle> particleList = new ArrayList<>();
+        for (int i = 0; i < n ; i++) {
+            int x = (int)(Math.random()*(l-1));
+            int y = (int)(Math.random()*(l-1));
+            int r = 1;
+            Point p = new Point(x,y);
+            particleList.add(new Particle(p,r));
+        }
+
+        space s = new space(l,m);
+        for (int i = 0; i < n; i++) {
+            s.add(particleList.get(i));
+        }
+        System.out.println("terminado");
+        System.out.println("");
+        System.out.println("imprimo las p creadas");
+        System.out.println(particleList.toString());
+        System.out.println("");
+        System.out.println("grafico");
+        System.out.println("");
+        s.print();
+        System.out.println("");
+        System.out.println("el vector");
+        System.out.println(s.toString());
+    }
+    */
 }

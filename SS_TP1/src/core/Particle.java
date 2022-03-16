@@ -4,10 +4,15 @@ public class Particle {
 
     private Point center;
     private double radius;
+    private int id;
+    private double criticR;
 
-    public Particle(Point pnt, double radius) {
+    public Particle(Point pnt, double radius, int id, double rc) {
         this.center = pnt;
         this.radius = radius;
+        this.id= id;
+        this.criticR= rc;
+        
     }
 
     public Point getCenter() {
@@ -32,4 +37,12 @@ public class Particle {
     public String toString() {
         return center.toString();
     }
+
+	public double getCritic() {
+		return this.criticR;
+	}
+	
+	public int getID() {
+		return this.id;
+	}
 }

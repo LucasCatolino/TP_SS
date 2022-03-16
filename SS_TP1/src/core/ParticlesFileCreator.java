@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import core.Writer;
 
+@SuppressWarnings("unused") //Warnings because Writer is not used, it only creates files
 public class ParticlesFileCreator {
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
 
@@ -22,11 +23,10 @@ public class ParticlesFileCreator {
     	int L= Integer.valueOf(auxL);
     	int N= Integer.valueOf(auxN);
 
-    	System.out.println("L: " + (L+2) + " N: " + N);  //TODO: porque l+2?
-        Writer writerDinamic = new Writer(L, N, "dinamic");
+    	System.out.println("L: " + L + " N: " + N);
+    	
+		Writer writerDinamic = new Writer(L, N, "dinamic");
         Writer writerStatic = new Writer(L, N, "static");
-
-    	//CIM file= new CIM();
     }
 
 }

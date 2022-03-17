@@ -32,8 +32,8 @@ public class Writer {
     }
 
 	private void randomizeParticles(Integer l, int n, FileWriter myWriter) throws IOException {
-		myWriter.write("" + l + "\n");
 		myWriter.write("" + n + "\n");
+		myWriter.write("" + l + "\n");
 		for (int i = 0; i < n; i++) {
 			double rad= 0.25;
 			int prop= 1;

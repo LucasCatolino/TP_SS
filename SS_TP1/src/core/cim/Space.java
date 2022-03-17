@@ -1,15 +1,15 @@
 package core.cim;
 
 import core.Particle;
-import jdk.internal.org.jline.reader.impl.history.DefaultHistory;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
+//import jdk.internal.org.jline.reader.impl.history.DefaultHistory;
+//import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class space {
+public class Space {
 
 
     private final List<Particle>[] mySpace;
@@ -17,9 +17,9 @@ public class space {
     private final int M;
     private final int numProjCell;
     private final int cellsCant;
-    
 
-    public space(int l, int m) {
+
+    public Space(int l, int m) {
         numProjCell = l/m;
         mySpace = (List<Particle>[]) new List[(numProjCell*numProjCell)];
         //mySpace = new ArrayList<>(l*l);
@@ -35,6 +35,10 @@ public class space {
             mySpace[index]= new ArrayList<>();
         }
         mySpace[index].add(p);
+    }
+
+    public int size(){
+        return numProjCell*numProjCell;
     }
 
     //se utilizan en add
@@ -106,6 +110,8 @@ public class space {
 
 
 
+
+
     //TODO: testear
     ///funciones de calculo de celdas vecinas
     private int leftCellNum(int cell){
@@ -114,20 +120,20 @@ public class space {
         return --cell;
     }
     private int rightCellNum(int cell){
-        if(cell < 0 || (cell-numProjCell)%numProjCell == 0)//estoy en un borde de la derecha
+        if(cell < 0 || (cell+1)%numProjCell == 0 )//estoy en un borde de la derecha
             return -1;
         return ++cell;
     }
 
     private int topCellNum(int cell){
-        if(cell < 0 || (cell+=numProjCell) > numProjCell*numProjCell)//estoy en el borde superior
+        if(cell < 0 || (cell+numProjCell) >= numProjCell*numProjCell)//estoy en el borde superior
             return -1;
-        return cell;
+        return cell+numProjCell;
     }
     private int bottomCellNum(int cell){
-        if(cell < 0 || (cell-=numProjCell) < 0)//estoy en el borde inferiro
+        if(cell < 0 || (cell-numProjCell) < 0)//estoy en el borde inferiro
             return -1;
-        return cell;
+        return cell-numProjCell;
     }
 
 
@@ -149,50 +155,80 @@ public class space {
     public String toString() {
         return Arrays.toString(mySpace);
     }
-    
+
     //Given a particle it returns half of the neighbor cells (Up, Up Right, Right, Down Right)
-	public List<Particle> getNeighbors(Particle particle) { //TODO: ver si se puede refactorizar mas lindo con menos ifs y fors, sino a casa
-		int actualCell= this.getCell(particle);
-		List<Particle> neighborsList= new ArrayList<Particle>();
-		
-		if (actualCell + this.numProjCell < cellsCant) {			
-			List<Particle> possibleUp= this.getParticles(actualCell + this.numProjCell);
-			if (possibleUp != null) {
-				for (Particle part : possibleUp) {
-					neighborsList.add(part);
-				}
-			}
-			
-			List<Particle> possibleUpR= this.getParticles(actualCell + this.numProjCell + 1);
-			if (possibleUpR != null) {
-				for (Particle part : possibleUpR) {
-					neighborsList.add(part);
-				}				
-			}
-		}
-		
-		if (actualCell + 1 < numProjCell) {			
-			List<Particle> possibleR= this.getParticles(actualCell + 1);
-			if (possibleR != null) {
-				for (Particle part : possibleR) {
-					neighborsList.add(part);
-				}
-			}
-		}
-		
-		if (actualCell - this.numProjCell + 1 > 0) {
-			List<Particle> possibleDownR= this.getParticles(actualCell - this.numProjCell + 1);
-			if (possibleDownR != null) {
-				for (Particle part : possibleDownR) {
-					neighborsList.add(part);
-				}				
-			}
-		}
-		
-		return neighborsList;
-	}
+    public List<Particle> getNeighbors(Particle particle) { //TODO: ver si se puede refactorizar mas lindo con menos ifs y fors, sino a casa
+        int actualCell= this.getCell(particle);
+        List<Particle> neighborsList= new ArrayList<Particle>();
 
+        if (actualCell + this.numProjCell < cellsCant) {
+            List<Particle> possibleUp= this.getParticles(actualCell + this.numProjCell);
+            if (possibleUp != null) {
+                for (Particle part : possibleUp) {
+                    neighborsList.add(part);
+                }
+            }
 
+            List<Particle> possibleUpR= this.getParticles(actualCell + this.numProjCell + 1);
+            if (possibleUpR != null) {
+                for (Particle part : possibleUpR) {
+                    neighborsList.add(part);
+                }
+            }
+        }
+
+        if (actualCell + 1 < numProjCell) {
+            List<Particle> possibleR= this.getParticles(actualCell + 1);
+            if (possibleR != null) {
+                for (Particle part : possibleR) {
+                    neighborsList.add(part);
+                }
+            }
+        }
+
+        if (actualCell - this.numProjCell + 1 > 0) {
+            List<Particle> possibleDownR= this.getParticles(actualCell - this.numProjCell + 1);
+            if (possibleDownR != null) {
+                for (Particle part : possibleDownR) {
+                    neighborsList.add(part);
+                }
+            }
+        }
+
+        return neighborsList;
+    }
+    private List<Particle> avoidNullList(List<Particle> l) {
+        if (l != null){
+            return l;
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Particle> getCellNeighbours(int i){
+        List<Particle> cellneighbours = new ArrayList<>();
+
+        cellneighbours.addAll(avoidNullList(LeftCellParticles(i)));
+        cellneighbours.addAll(avoidNullList(rightCellParticles(i)));
+        cellneighbours.addAll(avoidNullList(bottomCellParticles(i)));
+        cellneighbours.addAll(avoidNullList(topCellParticles(i)));
+        cellneighbours.addAll(avoidNullList(bottomLeftCellParticles(i)));
+        cellneighbours.addAll(avoidNullList(bottomRightCellParticles(i)));
+        cellneighbours.addAll(avoidNullList(topLeftParticles(i)));
+        cellneighbours.addAll(avoidNullList(topRightCellParticles(i)));
+        cellneighbours.addAll(avoidNullList(getParticles(i)));
+
+        return cellneighbours;
+    }
+
+    public List<Particle> identifyNeighbours(Particle myp, List<Particle> plist){
+        List<Particle> toRet = new ArrayList<>();
+        for(Particle p : plist){
+            if(myp.distance(p) <= myp.getCritic() && myp.getID() != p.getID()){
+                toRet.add(p);
+            }
+        }
+        return toRet;
+    }
     /*
     public static void main(String[] args){
         int l=100, m=5, n=1000, maxr =2;

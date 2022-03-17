@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Test;
 import core.Particle;
 import core.Point;
-import core.cim.space;
+import core.cim.Space;
 
 
 public class Tests {
@@ -73,7 +73,7 @@ public class Tests {
 	@Test
 	public void test05CrearEspacioConParticulas() {
 		
-		space space= new space(10, 1); //L= 10, M= 1 --> 10x10
+		Space space= new Space(10, 1); //L= 10, M= 1 --> 10x10
 		
 		Point point1= new Point(1.4, 0.5);
 		double radius1= 0.5;
@@ -104,7 +104,7 @@ public class Tests {
 	@Test
 	public void test06RecibirParticulasVecinas() {
 		
-		space space= new space(10, 1); //L= 10, M= 1 --> 10x10
+		Space space= new Space(10, 1); //L= 10, M= 1 --> 10x10
 		
 		Point point1= new Point(1.4, 0.5);
 		double radius1= 0.5;

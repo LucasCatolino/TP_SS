@@ -10,7 +10,7 @@ import core.Writer;
 
 @SuppressWarnings("unused") //Warnings because Writer is not used, it only creates files
 public class ParticlesFileCreator {
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+    public static String createFiles(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
 
     	System.out.println("Insert L");
         BufferedReader readerL = new BufferedReader(new InputStreamReader(System.in));
@@ -27,6 +27,8 @@ public class ParticlesFileCreator {
     	
 		Writer writerDinamic = new Writer(L, N, "dinamic");
         Writer writerStatic = new Writer(L, N, "static");
+
+        return auxL;
     }
 
 }

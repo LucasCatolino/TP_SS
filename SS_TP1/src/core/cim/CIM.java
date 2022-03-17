@@ -94,8 +94,9 @@ public class CIM {
         int id = 0;
         ds.next(); //t0
 
-
-        while(is.hasNext() && ds.hasNext()) {
+        int i = 0;
+        while(is.hasNext() && ds.hasNext() && i < n) {
+            i++;
             tokenr= Double.parseDouble(is.next());
             tokenrc = Double.parseDouble(is.next());
             tokenx = Double.parseDouble(ds.next());
@@ -107,7 +108,11 @@ public class CIM {
         ds.close();
         is.close();
 
+        long start = System.currentTimeMillis();
         cim.solveAlgorithm();
+        long finish = System.currentTimeMillis();
+        long duration = finish - start;
+        System.out.println("Runtime: " + duration + "ms");
         cim.printResults();
 
     }

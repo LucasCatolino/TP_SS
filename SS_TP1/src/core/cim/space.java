@@ -1,9 +1,12 @@
 package core.cim;
 
 import core.Particle;
+import jdk.internal.org.jline.reader.impl.history.DefaultHistory;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class space {
@@ -13,6 +16,8 @@ public class space {
     private final int L;
     private final int M;
     private final int numProjCell;
+    private final int cellsCant;
+    
 
     public space(int l, int m) {
         numProjCell = l/m;
@@ -20,7 +25,7 @@ public class space {
         //mySpace = new ArrayList<>(l*l);
         L = l;
         M = m;
-
+        cellsCant= numProjCell * numProjCell;
     }
 
     //agrega una particula al espacio
@@ -144,6 +149,48 @@ public class space {
     public String toString() {
         return Arrays.toString(mySpace);
     }
+    
+    //Given a particle it returns half of the neighbor cells (Up, Up Right, Right, Down Right)
+	public List<Particle> getNeighbors(Particle particle) { //TODO: ver si se puede refactorizar mas lindo con menos ifs y fors, sino a casa
+		int actualCell= this.getCell(particle);
+		List<Particle> neighborsList= new ArrayList<Particle>();
+		
+		if (actualCell + this.numProjCell < cellsCant) {			
+			List<Particle> possibleUp= this.getParticles(actualCell + this.numProjCell);
+			if (possibleUp != null) {
+				for (Particle part : possibleUp) {
+					neighborsList.add(part);
+				}
+			}
+			
+			List<Particle> possibleUpR= this.getParticles(actualCell + this.numProjCell + 1);
+			if (possibleUpR != null) {
+				for (Particle part : possibleUpR) {
+					neighborsList.add(part);
+				}				
+			}
+		}
+		
+		if (actualCell + 1 < numProjCell) {			
+			List<Particle> possibleR= this.getParticles(actualCell + 1);
+			if (possibleR != null) {
+				for (Particle part : possibleR) {
+					neighborsList.add(part);
+				}
+			}
+		}
+		
+		if (actualCell - this.numProjCell + 1 > 0) {
+			List<Particle> possibleDownR= this.getParticles(actualCell - this.numProjCell + 1);
+			if (possibleDownR != null) {
+				for (Particle part : possibleDownR) {
+					neighborsList.add(part);
+				}				
+			}
+		}
+		
+		return neighborsList;
+	}
 
 
     /*

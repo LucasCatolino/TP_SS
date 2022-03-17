@@ -16,6 +16,9 @@ public class CIM {
 	private Scanner inputScanner;
 	
 	public CIM() throws FileNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+
+		//leer los archivos
+
 		InputStream is = getClass().getClassLoader().getResourceAsStream("Static100.txt");
 		inputScanner = new Scanner(is);
 		
@@ -27,6 +30,7 @@ public class CIM {
 		}
 		
 		inputScanner.close();
+
 		
 	}
 	

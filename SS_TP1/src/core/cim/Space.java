@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class space {
+public class Space {
 
 
     private final List<Particle>[] mySpace;
@@ -19,7 +19,7 @@ public class space {
     private final int cellsCant;
     
 
-    public space(int l, int m) {
+    public Space(int l, int m) {
         numProjCell = l/m;
         mySpace = (List<Particle>[]) new List[(numProjCell*numProjCell)];
         //mySpace = new ArrayList<>(l*l);
@@ -35,6 +35,10 @@ public class space {
             mySpace[index]= new ArrayList<>();
         }
         mySpace[index].add(p);
+    }
+
+    public int size(){
+        return numProjCell*numProjCell;
     }
 
     //se utilizan en add

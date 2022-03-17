@@ -220,15 +220,7 @@ public class Space {
         return cellneighbours;
     }
 
-    public List<Particle> identifyNeighbours(Particle myp, List<Particle> plist){
-        List<Particle> toRet = new ArrayList<>();
-        for(Particle p : plist){
-            if(myp.distance(p) <= myp.getCritic() && myp.getID() != p.getID()){
-                toRet.add(p);
-            }
-        }
-        return toRet;
-    }
+
     /*
     public static void main(String[] args){
         int l=100, m=5, n=1000, maxr =2;

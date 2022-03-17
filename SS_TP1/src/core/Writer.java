@@ -10,8 +10,8 @@ public class Writer {
 
     public Writer(int L, int N, String type) {
         try {
-            File file = new File("SS_TP1/resources/" + type + L + ".txt");
-            FileWriter myWriter = new FileWriter("SS_TP1/resources/" + type + L + ".txt");
+            File file = new File("SS_TP1/resources/" + type  + ".txt");
+            FileWriter myWriter = new FileWriter("SS_TP1/resources/" + type  + ".txt");
             //myWriter.write("" + L + "\n");
             //myWriter.write("" + N + "\n");
             try {

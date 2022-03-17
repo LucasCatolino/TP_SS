@@ -15,7 +15,7 @@ public class CIM {
 	private Scanner inputScanner;
 	
 	public CIM() throws FileNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		InputStream is = getClass().getClassLoader().getResourceAsStream("Static100.txt");
+		InputStream is = getClass().getClassLoader().getResourceAsStream("static.txt");
 		inputScanner = new Scanner(is);
 		
 		String token;

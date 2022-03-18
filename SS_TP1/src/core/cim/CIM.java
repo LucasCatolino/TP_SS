@@ -67,7 +67,10 @@ public class CIM {
     public void printResults(){
         System.out.println("Printing neighbours!");
         StringBuilder strb = new StringBuilder();
-        for(Particle p : neighbors.keySet()){
+        List<Particle> ns = new ArrayList<>(neighbors.keySet());
+        ns.sort(Comparator.comparingInt(Particle::getID));
+
+        for(Particle p : ns){
             strb.append(p.getID()).append(" ");
             for(Particle pa : neighbors.get(p)){
                 strb.append(pa.getID()).append(" ");

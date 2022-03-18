@@ -24,7 +24,7 @@ public class Writer {
 				System.err.println("IOException");
 			}
             myWriter.close();
-            System.out.println("Successfully wrote to the file ./resources/" + type + L + ".txt");
+            System.out.println("Successfully wrote to the file ./resources/" + type + ".txt");
         } catch (IOException e) {
             System.out.println("IOException ocurred");
             e.printStackTrace();

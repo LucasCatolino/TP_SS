@@ -17,7 +17,8 @@ public class CIM {
     private final Space space;
     final private int N;
     final private double rc;
-    final static int M = 10;
+    final static int M = 25;
+    
     final static double RC = 0.001;
     //final private String[] fileName; //se usa para getNextParticle sepa que archivos lee
     private Map<Particle, List<Particle>> neighbors;
@@ -76,7 +77,7 @@ public class CIM {
             }
             strb.append("\n");
         }
-        try (PrintWriter out = new PrintWriter("output.txt")) {
+        try (PrintWriter out = new PrintWriter("./SS_TP1/resources/output.txt")) {
             out.println(strb);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -7,7 +7,7 @@ public class Particle {
     private int id;
     private double criticR;
 
-    public Particle(Point pnt, double radius, int id, double rc) {
+    public Particle(Point pnt, Double radius, int id, Double rc) {
         this.center = pnt;
         this.radius = radius;
         this.id= id;

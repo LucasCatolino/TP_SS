@@ -139,7 +139,7 @@ public class Space {
 
 
 
-    //intenta imprimir una especie de grÃ¡fico de space
+    //intenta imprimir una especie de gráfico de space
     public void print(){
         for (int y = numProjCell-1; y >= 0; y--) {
             System.out.print(y+" |");

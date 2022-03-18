@@ -12,7 +12,7 @@ import core.cim.Space;
 
 
 public class Tests {
-
+/*
 	@After
 	public void tearDown() throws Exception {
 	}
@@ -129,6 +129,6 @@ public class Tests {
 		assertEquals(2, cell1.get(1).getID());
 	}
 
-
+*/
 
 }

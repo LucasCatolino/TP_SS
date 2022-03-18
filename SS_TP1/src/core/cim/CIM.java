@@ -17,6 +17,8 @@ public class CIM {
     private final Space space;
     final private int N;
     final private double rc;
+    final static int M = 5;
+    final static double RC = 1.0;
     //final private String[] fileName; //se usa para getNextParticle sepa que archivos lee
     private Map<Particle, List<Particle>> neighbors;
 
@@ -91,9 +93,9 @@ public class CIM {
         Scanner is = new Scanner(staticstream);
 
         Double tokenr, tokenrc, tokenx,tokeny;
-        int l = Integer.parseInt(is.next()); //L
         int n = Integer.parseInt(is.next()); //N
-        CIM cim = new CIM(l,5,n,1);
+        int l = Integer.parseInt(is.next()); //L
+        CIM cim = new CIM(l,M,n,RC);
         int id = 0;
         ds.next(); //t0
 

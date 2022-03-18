@@ -10,8 +10,8 @@ public class Writer {
 
     public Writer(int L, int N, String type) {
         try {
-            File file = new File("./resources/" + type + L + ".txt");
-            FileWriter myWriter = new FileWriter("./resources/" + type + L + ".txt");
+            File file = new File("SS_TP1/resources/" + type  + ".txt");
+            FileWriter myWriter = new FileWriter("SS_TP1/resources/" + type  + ".txt");
             //myWriter.write("" + L + "\n");
             //myWriter.write("" + N + "\n");
             try {
@@ -32,10 +32,10 @@ public class Writer {
     }
 
 	private void randomizeParticles(Integer l, int n, FileWriter myWriter) throws IOException {
-		myWriter.write("" + l + "\n");
 		myWriter.write("" + n + "\n");
+		myWriter.write("" + l + "\n");
 		for (int i = 0; i < n; i++) {
-			double rad= Math.random();
+			double rad= 0.25;
 			int prop= 1;
 			myWriter.write("" + rad + "\t" + "" + prop + "\n");
 		}

@@ -27,6 +27,7 @@ public class ParticlesFileCreator {
     	
 		Writer writerDinamic = new Writer(L, N, "dinamic");
         Writer writerStatic = new Writer(L, N, "static");
+
     }
 
 }

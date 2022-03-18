@@ -8,8 +8,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
-import sun.security.action.OpenFileInputStreamAction;
-import sun.tools.tree.ThisExpression;
+
 
 public class CIM {
 	
@@ -17,9 +16,7 @@ public class CIM {
 	
 	public CIM() throws FileNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
-		//leer los archivos
-
-		InputStream is = getClass().getClassLoader().getResourceAsStream("Static100.txt");
+		InputStream is = getClass().getClassLoader().getResourceAsStream("static.txt");
 		inputScanner = new Scanner(is);
 		
 		String token;

@@ -3,6 +3,7 @@ package core.cim;
 import core.Particle;
 import core.Point;
 import core.ParticlesFileCreator;
+import core.VirtualParticle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class CIM {
     final static int M = 10;
     final static double RC = 0.001;
     //final private String[] fileName; //se usa para getNextParticle sepa que archivos lee
-    private Map<Particle, List<Particle>> neighbors;
+    private Map<Integer, List<Integer>> neighbors;
 
     public CIM(int l, int m, int n, double rc) {
         N = n;
@@ -35,11 +36,25 @@ public class CIM {
 
 
 
-    public List<Particle> identifyNeighbours(Particle myp, List<Particle> plist){
-        List<Particle> toRet = new ArrayList<>();
+    public List<Integer> identifyNeighbours(Particle myp, List<Particle> plist){
+        List<Integer> toRet = new ArrayList<>();
         for(Particle p : plist){
             if(myp.distance(p) <= myp.getCritic() && myp.getID() != p.getID()){
-                toRet.add(p);
+                toRet.add(p.getID());
+
+            }
+        }
+        return toRet;
+    }
+
+    public List<Integer> identifyVirtualNeighbours(Particle myp, List<VirtualParticle> plist){
+        List<Integer> toRet = new ArrayList<>();
+        for(VirtualParticle p : plist){
+            double aux;
+            if( p.distance(myp)<= myp.getCritic() && myp.getID() != p.getId()){
+                toRet.add(p.getId());
+                neighbors.putIfAbsent(p.getId(), new ArrayList<>());
+                neighbors.get(p.getId()).add(myp.getID(), p.getId());
             }
         }
         return toRet;
@@ -53,10 +68,13 @@ public class CIM {
 
             List<Particle> cellParticles = space.getParticles(i);
             List<Particle> cellNeighboursParticles = space.getCellNeighbours(i);
-
+            List<VirtualParticle> virtualNeighbours = space.getVirtualCellNeighbours(i);
             if(cellParticles != null) {//puede que no tenga ninguna particula
                 for (Particle p : cellParticles) {
-                    neighbors.put(p, identifyNeighbours(p, cellNeighboursParticles));
+                    neighbors.putIfAbsent(p.getID(),new ArrayList<>());
+                    neighbors.get(p.getID()).addAll(p.getID(), identifyNeighbours(p, cellNeighboursParticles));
+                    neighbors.get(p.getID()).addAll( identifyVirtualNeighbours(p,virtualNeighbours));
+
                 }
             }
         }
@@ -66,13 +84,13 @@ public class CIM {
     public void printResults(){
         System.out.println("Printing neighbours!");
         StringBuilder strb = new StringBuilder();
-        List<Particle> ns = new ArrayList<>(neighbors.keySet());
-        ns.sort(Comparator.comparingInt(Particle::getID));
+        List<Integer> ns = new ArrayList<>(neighbors.keySet());
+        ns.sort(Integer::compareTo);
 
-        for(Particle p : ns){
-            strb.append(p.getID()).append(" ");
-            for(Particle pa : neighbors.get(p)){
-                strb.append(pa.getID()).append(" ");
+        for(Integer p : ns){
+            strb.append(p).append(" ");
+            for(Integer id : neighbors.get(p)){
+                strb.append(id).append(" ");
             }
             strb.append("\n");
         }

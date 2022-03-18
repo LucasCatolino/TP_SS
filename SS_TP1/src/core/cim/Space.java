@@ -1,6 +1,8 @@
 package core.cim;
 
 import core.Particle;
+import core.Point;
+import core.VirtualParticle;
 //import jdk.internal.org.jline.reader.impl.history.DefaultHistory;
 //import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 
@@ -14,18 +16,18 @@ public class Space {
 
     private final List<Particle>[] mySpace;
     private final int L;
+    private final int cellSize;
     private final int M;
-    private final int numProjCell;
     private final int cellsCant;
 
 
     public Space(int l, int m) {
-        numProjCell = l/m;
-        mySpace = (List<Particle>[]) new List[(numProjCell*numProjCell)];
+        cellsCant= m*m;
+        mySpace = (List<Particle>[]) new List[(cellsCant)];
         //mySpace = new ArrayList<>(l*l);
         L = l;
+        cellSize = l/m;
         M = m;
-        cellsCant= numProjCell * numProjCell;
     }
 
     //agrega una particula al espacio
@@ -38,7 +40,7 @@ public class Space {
     }
 
     public int size(){
-        return numProjCell*numProjCell;
+        return M*M;
     }
 
     //se utilizan en add
@@ -50,20 +52,20 @@ public class Space {
         double xProjections = getProjections(x);
         double yProjections = getProjections(y);
 
-        return (int) (xProjections +( numProjCell * (yProjections)));
+        return (int) (xProjections +( M * (yProjections)));
     }
 
     //se utiliza en add
     private double getProjections(double num){
-        double aux = num - num %M;
-        return (aux/M);
+        double aux = num - num %cellSize;
+        return (aux/cellSize);
     }
 
 
     //TODO: testear
     //devuelve una lista con todas la particulas de la celda
     public List<Particle> getParticles(int cell){
-        if(cell < 0 || cell > numProjCell*numProjCell)
+        if(cell < 0 || cell > M*M)
             return null;
         return mySpace[cell];
     }
@@ -115,25 +117,25 @@ public class Space {
     //TODO: testear
     ///funciones de calculo de celdas vecinas
     private int leftCellNum(int cell){
-        if(cell < 0 || cell%numProjCell == 0)//estoy en un borde de la izquierda
+        if(cell < 0 || cell%M == 0)//estoy en un borde de la izquierda
             return -1;
         return --cell;
     }
     private int rightCellNum(int cell){
-        if(cell < 0 || (cell+1)%numProjCell == 0 )//estoy en un borde de la derecha
+        if(cell < 0 || (cell+1)%M == 0 )//estoy en un borde de la derecha
             return -1;
         return ++cell;
     }
 
     private int topCellNum(int cell){
-        if(cell < 0 || (cell+numProjCell) >= numProjCell*numProjCell)//estoy en el borde superior
+        if(cell < 0 || (cell+M) >= M*M)//estoy en el borde superior
             return -1;
-        return cell+numProjCell;
+        return cell+M;
     }
     private int bottomCellNum(int cell){
-        if(cell < 0 || (cell-numProjCell) < 0)//estoy en el borde inferiro
+        if(cell < 0 || (cell-M) < 0)//estoy en el borde inferiro
             return -1;
-        return cell-numProjCell;
+        return cell-M;
     }
 
 
@@ -141,10 +143,10 @@ public class Space {
 
     //intenta imprimir una especie de gráfico de space
     public void print(){
-        for (int y = numProjCell-1; y >= 0; y--) {
+        for (int y = M-1; y >= 0; y--) {
             System.out.print(y+" |");
-            for (int x = 0; x<numProjCell; x++) {
-                System.out.print(mySpace[(x+(numProjCell*y))]);
+            for (int x = 0; x<M; x++) {
+                System.out.print(mySpace[(x+(M*y))]);
                 System.out.print(" | ");
             }
             System.out.println();
@@ -156,47 +158,7 @@ public class Space {
         return Arrays.toString(mySpace);
     }
 
-    //Given a particle it returns half of the neighbor cells (Up, Up Right, Right, Down Right)
-    public List<Particle> getNeighbors(Particle particle) { //TODO: ver si se puede refactorizar mas lindo con menos ifs y fors, sino a casa
-        int actualCell= this.getCell(particle);
-        List<Particle> neighborsList= new ArrayList<Particle>();
 
-        if (actualCell + this.numProjCell < cellsCant) {
-            List<Particle> possibleUp= this.getParticles(actualCell + this.numProjCell);
-            if (possibleUp != null) {
-                for (Particle part : possibleUp) {
-                    neighborsList.add(part);
-                }
-            }
-
-            List<Particle> possibleUpR= this.getParticles(actualCell + this.numProjCell + 1);
-            if (possibleUpR != null) {
-                for (Particle part : possibleUpR) {
-                    neighborsList.add(part);
-                }
-            }
-        }
-
-        if (actualCell + 1 < numProjCell) {
-            List<Particle> possibleR= this.getParticles(actualCell + 1);
-            if (possibleR != null) {
-                for (Particle part : possibleR) {
-                    neighborsList.add(part);
-                }
-            }
-        }
-
-        if (actualCell - this.numProjCell + 1 > 0) {
-            List<Particle> possibleDownR= this.getParticles(actualCell - this.numProjCell + 1);
-            if (possibleDownR != null) {
-                for (Particle part : possibleDownR) {
-                    neighborsList.add(part);
-                }
-            }
-        }
-
-        return neighborsList;
-    }
     private List<Particle> avoidNullList(List<Particle> l) {
         if (l != null){
             return l;
@@ -204,8 +166,59 @@ public class Space {
         return new ArrayList<>();
     }
 
+
+    private boolean isRightBorderCell(int index){
+        return index % M == 0;
+    }
+
+    private boolean isLeftBorderCell(int index){
+        return index % M == M - 1;
+    }
+
+    private boolean isTopBorderCell(int index){
+        return index >= (M * (M - 1));
+    }
+
+    private boolean isBottomBorderCell(int index){
+        return index < M;
+    }
+
+    private boolean isBorderCell(int i){
+        return isLeftBorderCell(i) || isBottomBorderCell(i);
+    }
+
+
+    public List<VirtualParticle> getVirtualCellNeighbours(int i){
+        List<VirtualParticle> virtualneighbours = new ArrayList<>();
+
+        if(isBorderCell(i)){
+
+            if(isLeftBorderCell(i) && getParticles(i + M-1) != null){
+                for(Particle p : getParticles(i + M-1)){
+                    virtualneighbours.add(new VirtualParticle(new Point(p.getCenter().getX() - L,p.getCenter().getY()), p.getID()));
+                }
+                if(isBottomBorderCell(i)&& getParticles(cellsCant-1) != null){
+                    for(Particle p : getParticles(cellsCant-1)){
+                        virtualneighbours.add(new VirtualParticle(new Point(p.getCenter().getX() - L,p.getCenter().getY() -L), p.getID()));
+                    }
+                }
+                if(isTopBorderCell(i) && getParticles(M-1) != null){
+                    for(Particle p : getParticles(M-1)){
+                        virtualneighbours.add(new VirtualParticle(new Point(p.getCenter().getX() - L,p.getCenter().getY() + L), p.getID()));
+                    }
+                }
+            }
+            if(isBottomBorderCell(i) && getParticles((i + M*(M-1))-1 )!= null){
+                for(Particle p : getParticles((i + M*(M-1))-1 )){
+                    virtualneighbours.add(new VirtualParticle(new Point(p.getCenter().getX(),p.getCenter().getY() - L), p.getID()));
+                }
+            }
+        }
+        return  virtualneighbours;
+    }
     public List<Particle> getCellNeighbours(int i){
         List<Particle> cellneighbours = new ArrayList<>();
+
 
         cellneighbours.addAll(avoidNullList(LeftCellParticles(i)));
         cellneighbours.addAll(avoidNullList(rightCellParticles(i)));

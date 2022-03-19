@@ -4,5 +4,4 @@
 .classpath
 ./resources/*.txt
 *.txt
-./out/*
 /out/

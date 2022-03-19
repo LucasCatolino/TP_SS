@@ -11,7 +11,6 @@ public class CIM {
 
     public CIM(int spaceSize, int numOfCell, boolean infiniteSpace) {
         interactions = new HashMap<>();
-
         if (infiniteSpace) {
             mySpace = new InfiniteSpace(spaceSize, numOfCell);
         }else{
@@ -29,12 +28,12 @@ public class CIM {
         //recorrer mySpace celda a celda buscando los vecinos
         for (int currentCell = 0; currentCell < mySpace.totalCells(); currentCell++) {
 
-            List<Particle> particlesOfCellI = mySpace.getParticles(currentCell); //todas la particulas de la celda i
-            if (particlesOfCellI == null) {
+            List<Particle> particlesOfCurrentCell = mySpace.getParticles(currentCell); //todas la particulas de la celda currentCell
+            if (particlesOfCurrentCell == null) {
                 continue;//no hay partiluas en esta celda
             }
 
-            for (Particle currentP : particlesOfCellI) { //itero por particlesOfCellI
+            for (Particle currentP : particlesOfCurrentCell) { //itero por particlesOfCurrentCell
                 interactions.putIfAbsent(currentP.getID(), new HashMap<>());
                 //busco todas las posibles particulas que puden interactua con currentP
                 List<Particle> AllNeighboringParticles = mySpace.getAllNeighboringParticles(currentCell);
@@ -43,10 +42,10 @@ public class CIM {
                 for (Particle neighboringParticle : AllNeighboringParticles) {
                     //primero me fijo si son la misma particula
                     if(neighboringParticle.equals(currentP)){
-                        continue; //son la misma particula
+                        continue; //paso a la suguiente
                     }
-                //veo su neighboringParticle y currentP interactuan
-                    //Primero me fijo si ya guarde esta interacion
+                //veo si neighboringParticle y currentP interactuan
+                    //Primero me fijo si ya guarde esta interaccion
                     if (interactions.containsKey(neighboringParticle.getID()))
                         if (interactions.get(neighboringParticle.getID()).containsKey(currentP.getID()))
                             continue; //ya se si estas particulas interactuan o no

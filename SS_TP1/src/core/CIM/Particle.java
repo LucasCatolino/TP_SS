@@ -40,8 +40,6 @@ public class Particle {
     }
 
     public Particle getVirtual(double x, double y){
-        //double newX = X==null ? getCenter().x : X;
-        //double newY = Y==null ? getCenter().y : Y;
         double newX = getCenter().x - x;
         double newY = getCenter().y - y;
         return new Particle(new Point(newX, newY), radius, id, criticR);

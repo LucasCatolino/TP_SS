@@ -78,7 +78,6 @@ public class Space{
         }
     }
 
-
     //devuelve las particulas de las celda izquierda
     public List<Particle> LeftCellParticles(int cell){
         return getParticles(leftCellNum(cell));

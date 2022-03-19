@@ -17,6 +17,7 @@ public class ParticlesFileCreator {
     	int L= Integer.valueOf(auxL);
     	int N= Integer.valueOf(auxN);
 
+
     	System.out.println("L: " + L + " N: " + N);
     	
 		Writer writerDinamic = new Writer(L, N, "dinamic");

@@ -11,7 +11,7 @@ public class Writer {
             //myWriter.write("" + L + "\n");
             //myWriter.write("" + N + "\n");
             try {
-            	if (type.compareTo("dinamic") == 0) {
+            	if (type.compareTo("dynamic") == 0) {
 					this.randomizePositions(L, N, myWriter);
 				} else {
 					this.randomizeParticles(L, N, myWriter);

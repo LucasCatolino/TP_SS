@@ -23,12 +23,6 @@ public class Point {
         return Math.sqrt((Math.pow((this.x-p.x),2)+Math.pow((this.y-p.y),2)));
     }
 
-
-    public void move(double x, double y){
-        this.x += x;
-        this.y += y;
-    }
-
     @Override
     public String toString() {
         return String.format("(%g;%g)",x,y);

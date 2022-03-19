@@ -23,14 +23,6 @@ public class Particle {
         return center;
     }
 
-    public double getRadius() {
-        return radius;
-    }
-
-    public double getCritic() {
-        return this.criticR;
-    }
-
     public int getID() {
         return this.id;
     }
@@ -43,9 +35,8 @@ public class Particle {
     }
 
     public double distance(Particle p){
-    	double dist= center.distance(p.getCenter()) - radius - p.radius;
-    	//if particles are overlapped, distance betwen borders is zero
-        return dist;
+        //if particles are overlapped, distance betwen borders is zero
+        return center.distance(p.getCenter()) - radius - p.radius;
     }
 
     public Particle getVirtual(double x, double y){

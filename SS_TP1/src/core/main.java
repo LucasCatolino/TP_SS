@@ -9,9 +9,8 @@ import javax.swing.plaf.synth.SynthRootPaneUI;
 
 
 public class main {
-	/*
 	public static void main(String[] args){
-		InputStream dynamicStream = CIM.class.getClassLoader().getResourceAsStream("dinamic" + ".txt");
+		InputStream dynamicStream = CIM.class.getClassLoader().getResourceAsStream("dynamic" + ".txt");
 		assert dynamicStream != null;
 		InputStream staticStream = CIM.class.getClassLoader().getResourceAsStream("static" + ".txt");
 		assert staticStream != null;
@@ -40,10 +39,8 @@ public class main {
 		dynamicScanner.close();
 		staticScanner.close();
 
-		/*
-		COMIENZO DEL ALGORITMO
-		 */
-	/*
+
+		//COMIENZO DEL ALGORITMO
 		long startTime = System.nanoTime();
 
 		CIM cim = new CIM(spaceSize, 20, true);
@@ -53,10 +50,8 @@ public class main {
 		cim.solveAlgorithm();
 
 		long endTime = System.nanoTime();
-		/*
-		FIN DEL ALGORITMO
-		 */
-	/*
+		//FIN DEL ALGORITMO
+
 		System.out.println("Finished.   "+(endTime-startTime)/1e6 +" ms");
 		System.out.println();
 
@@ -66,7 +61,7 @@ public class main {
 		boolean flag = cim.interactionsCheck(allParticle); ;
 		System.out.println("check :"+ (flag? "OK" : "error"));
 	}
-	*/
+	/*
 
 	//prueba de CIM sin archivos
 	public static void main(String[] args){
@@ -108,6 +103,6 @@ public class main {
 
 		System.out.println("timpo de fueza bruta: "+ (endTime2-startTime2)/1e6 + " ms");
 	}
-
+*/
 
 }

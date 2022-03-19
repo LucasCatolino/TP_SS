@@ -20,10 +20,6 @@ public class Space{
 
     }
 
-    public int size(){
-        return spaceSize;
-    }
-
     public int totalCells(){
         return totalCells;
     }
@@ -63,7 +59,7 @@ public class Space{
      */
     public List<Particle> getAllNeighboringParticles(int cell){
         List<Particle> toReturn = new ArrayList<>();
-        toReturn.addAll(mySpace[cell]);
+        union(toReturn, mySpace[cell]);
         union(toReturn, LeftCellParticles(cell));
         union(toReturn, rightCellParticles(cell));
         union(toReturn, topCellParticles(cell));
@@ -137,18 +133,6 @@ public class Space{
         if(cell < 0 || (cell-numOfCells) < 0)//estoy en el borde inferiro
             return -1;
         return cell-numOfCells;
-    }
-
-    //intenta imprimir una especie de gráfico de space
-    public void print(){
-        for (int y = numOfCells-1; y >= 0; y--) {
-            System.out.print(y+" |");
-            for (int x = 0; x<numOfCells; x++) {
-                System.out.print(mySpace[(x+(numOfCells*y))]);
-                System.out.print(" | ");
-            }
-            System.out.println();
-        }
     }
 
     @Override

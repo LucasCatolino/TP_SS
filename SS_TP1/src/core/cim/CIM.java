@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class CIM {
-    private Space mySpace;
+    private final Space mySpace;
     private int cantOfParticle = 0;
     private final Map<Integer, Map<Integer, Boolean>> interactions;
 

@@ -1,17 +1,13 @@
-package core;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Writer {
 
     public Writer(int L, int N, String type) {
         try {
-            File file = new File("SS_TP1/resources/" + type  + ".txt");
-            FileWriter myWriter = new FileWriter("SS_TP1/resources/" + type  + ".txt");
+            File file = new File("resources/" + type  + ".txt");
+            FileWriter myWriter = new FileWriter("resources/" + type  + ".txt");
             //myWriter.write("" + L + "\n");
             //myWriter.write("" + N + "\n");
             try {

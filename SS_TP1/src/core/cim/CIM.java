@@ -1,130 +1,136 @@
-package core.cim;
-
-import core.Particle;
-import core.Point;
+package CIM;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-import static java.lang.Thread.sleep;
-
 public class CIM {
-	
-	private static final int M= 1;
-	private static final double RC= 1.0;
-    private final Space space;
-    final private int N;
-    final private double rc;
-    //final private String[] fileName; //se usa para getNextParticle sepa que archivos lee
-    private Map<Particle, List<Particle>> neighbors;
+    private Space mySpace;
+    private int cantOfParticle = 0;
+    private final Map<Integer, Map<Integer, Boolean>> interactions;
 
-    public CIM(int l, int m, int n, double rc) {
-        N = n;
-        //this.fileName = "fileName";
-        space = new Space(l, m, false); //TODO: el false
-        this.rc = rc;
-        neighbors = new HashMap<>();
-    }
+    public CIM(int spaceSize, int numOfCell, boolean infiniteSpace) {
+        interactions = new HashMap<>();
 
-
-
-
-    //lee los archivos y va devolviendo de a una particulas
-    private Particle getNextParticle(){
-        return new Particle(new Point(1,1) ,1, 1, 1);
-    }
-
-    public List<Particle> identifyNeighboringParticles(Particle currentP, int cell, List<Particle> particles){
-        List<Particle> toRet = new ArrayList<>();
-        for(Particle p : particles){
-            //ver como calcular con los vecinos virtuales
-
-            double dist = space.getDistance(currentP, cell, p.getID());
-            if(dist != -1 || dist <= currentP.getCritic()){
-                toRet.add(p);
-            }else if(currentP.distance(p) <= currentP.getCritic() && currentP.getID() != p.getID()){
-                toRet.add(p);
-            }
+        if (infiniteSpace) {
+            mySpace = new InfiniteSpace(spaceSize, numOfCell);
+        }else{
+            mySpace = new Space(spaceSize, numOfCell);
         }
-        return toRet;
+
     }
 
+    public void add(Particle p) {
+        mySpace.add(p);
+        cantOfParticle++;
+    }
 
-    public void solveAlgorithm(){
-        //guardo todas las particulas en space
-        //recorrer space celda a celda buscando los vecinos
-        for (int currentCell = 0; currentCell < space.totalCells(); currentCell++) {
+    public void solveAlgorithm() {
+        //recorrer mySpace celda a celda buscando los vecinos
+        for (int currentCell = 0; currentCell < mySpace.totalCells(); currentCell++) {
 
-            List<Particle> currentCellParticles = space.getParticles(currentCell);
-            List<Particle> neighboringCellsParticles = space.getCellNeighbours(currentCell);
+            List<Particle> particlesOfCellI = mySpace.getParticles(currentCell); //todas la particulas de la celda i
+            if (particlesOfCellI == null) {
+                continue;//no hay partiluas en esta celda
+            }
 
-            if(currentCellParticles != null) {//puede que no tenga ninguna particula
-                for (Particle currentP : currentCellParticles) {
-                    neighbors.put(currentP, identifyNeighboringParticles(currentP, currentCell, neighboringCellsParticles));
+            for (Particle currentP : particlesOfCellI) { //itero por particlesOfCellI
+                interactions.putIfAbsent(currentP.getID(), new HashMap<>());
+                //busco todas las posibles particulas que puden interactua con currentP
+                List<Particle> AllNeighboringParticles = mySpace.getAllNeighboringParticles(currentCell);
+
+                //veo si estas
+                for (Particle neighboringParticle : AllNeighboringParticles) {
+                    //primero me fijo si son la misma particula
+                    if(neighboringParticle.equals(currentP)){
+                        continue; //son la misma particula
+                    }
+                //veo su neighboringParticle y currentP interactuan
+                    //Primero me fijo si ya guarde esta interacion
+                    if (interactions.containsKey(neighboringParticle.getID()))
+                        if (interactions.get(neighboringParticle.getID()).containsKey(currentP.getID()))
+                            continue; //ya se si estas particulas interactuan o no
+
+                    //sino me fijo si estas partuclas interacuan
+                    if (currentP.interactWith(neighboringParticle)) {
+                        //si interactuan.
+                        interactions.get(currentP.getID()).put(neighboringParticle.getID(), true);
+                        //como interactúan mutuamente tambien agrego al revés
+                        interactions.putIfAbsent(neighboringParticle.getID(), new HashMap<>());
+                        interactions.get(neighboringParticle.getID()).put(currentP.getID(), true);
+                    } else {
+                        //no interactuan.
+                        interactions.get(currentP.getID()).put(neighboringParticle.getID(), false);
+                        //como NO interactúan mutuamente tambien agrego al revés
+                        interactions.putIfAbsent(neighboringParticle.getID(), new HashMap<>());
+                        interactions.get(neighboringParticle.getID()).put(currentP.getID(), false);
+                    }
+
+                }//salgo del for parso al siguinte neighboringParticle
+
+            }//salgo del for paso al siguiente currentP
+        }//salgo del for, paso al siguiente currentCell
+
+    }//termino
+
+    public void printResults(String fileName) {
+        StringBuilder fileString = new StringBuilder();
+
+        for (int id = 0; id < cantOfParticle; id++) {
+            if(!interactions.containsKey(id)){continue;}
+            fileString.append(id).append(" ");
+
+            for (Map.Entry<Integer, Boolean> entry : interactions.get(id).entrySet()) {
+                if(entry.getValue()){
+                    fileString.append(entry.getKey()).append(" ");
                 }
             }
+            fileString.append("\n");
         }
 
-    }
-
-    public void printResults(){
-        System.out.println("Printing neighbours!");
-        StringBuilder strb = new StringBuilder();
-        List<Particle> ns = new ArrayList<>(neighbors.keySet());
-        ns.sort(Comparator.comparingInt(Particle::getID));
-
-        for(Particle p : ns){
-            strb.append(p.getID()).append(" ");
-            for(Particle pa : neighbors.get(p)){
-                strb.append(pa.getID()).append(" ");
-            }
-            strb.append("\n");
-        }
-        try (PrintWriter out = new PrintWriter("./resources/output.txt")) {
-            out.println(strb);
+        try (PrintWriter outFile = new PrintWriter(fileName)) {
+            outFile.println(fileString);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) throws IOException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, InterruptedException {
-        InputStream dinamicstream = CIM.class.getClassLoader().getResourceAsStream("dinamic" + ".txt");
-        Scanner ds = new Scanner(dinamicstream);
-        InputStream staticstream = CIM.class.getClassLoader().getResourceAsStream("static"  + ".txt");
-        Scanner is = new Scanner(staticstream);
+    //no chequea con bordes infinitos
+    public boolean interactionsCheck(List<Particle> allParticle) {
+        int aux = 0;
+        for (Particle currentP : allParticle) {
+            aux++;
+            for (Particle p : allParticle) {
+                if (currentP.getID() == p.getID()) {
+                    continue;//son la misma particula
+                }
+                if (currentP.interactWith(p)) {
+                    if(interactions.containsKey(currentP.getID())){
+                        if(interactions.get(currentP.getID()).containsKey(p.getID())){
+                            if (!interactions.get(currentP.getID()).get(p.getID())) {
+                                System.out.println("error: "+currentP.getID()+"y "+p.getID()+" si interactuan");
+                                return false;
+                            }
+                        }else{
+                            System.out.println("el pnt: "+currentP.getID()+ "no contiene al pnt: "+p.getID());
+                            return false;
+                        }
+                    }else{
+                        System.out.println("interactions no contiene al pnt: "+currentP.getID());
+                        return false;
+                    }
 
-        Double tokenr, tokenrc, tokenx,tokeny;
-        int n = Integer.parseInt(is.next()); //N
-        int l = Integer.parseInt(is.next()); //L
-        CIM cim = new CIM(l,M,n,RC);
-        int id = 0;
-        ds.next(); //t0
-
-        int i = 0;
-        while(is.hasNext() && ds.hasNext() && i < n) {
-            i++;
-            tokenr= Double.parseDouble(is.next());
-            tokenrc = Double.parseDouble(is.next());
-            tokenx = Double.parseDouble(ds.next());
-            tokeny = Double.parseDouble(ds.next());
-            cim.space.add(new Particle(new Point(tokenx,tokeny) ,tokenr, id, tokenrc));
-            System.out.println(id + ": " + tokenr + " " + tokenrc + " " + tokenx + " " + tokeny);
-            id++;
+                }
+            }
         }
-        ds.close();
-        is.close();
-
-        long start = System.currentTimeMillis();
-        cim.solveAlgorithm();
-        long finish = System.currentTimeMillis();
-        long duration = finish - start;
-        System.out.println("Runtime: " + duration + "ms");
-        cim.printResults();
-
+        if(aux != cantOfParticle){
+            System.out.println("error en la cantidad de partculas");
+            System.out.println("cim = "+ cantOfParticle );
+            System.out.println("contadas = "+ aux );
+            return false;
+        }
+        return true;
     }
+
 
 }

@@ -1,4 +1,4 @@
-package core;
+package CIM;
 
 import java.util.Objects;
 
@@ -22,6 +22,7 @@ public class Point {
     public double distance(Point p){
         return Math.sqrt((Math.pow((this.x-p.x),2)+Math.pow((this.y-p.y),2)));
     }
+
 
     public void move(double x, double y){
         this.x += x;

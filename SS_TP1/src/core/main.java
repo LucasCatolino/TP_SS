@@ -1,11 +1,12 @@
-import CIM.CIM;
+package core;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import core.CIM.*;
+
 import java.util.List;
 import java.util.Scanner;
-import CIM.*;
-import javax.swing.plaf.synth.SynthRootPaneUI;
+
 
 
 public class main {

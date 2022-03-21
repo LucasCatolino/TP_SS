@@ -1,4 +1,5 @@
-package CIM;
+package core.CIM;
+
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
